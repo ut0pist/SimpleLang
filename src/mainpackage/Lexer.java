@@ -4,7 +4,7 @@ import Exceptions.WrongSymbolException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-//hello world
+//hello
 public class Lexer {
     public ArrayList<Token> get_tokens(String input_str) throws WrongSymbolException {
         int counter; //Счетчик количества лексем. Используется, чтобы выйти из цикла поиска токенов.
