@@ -8,8 +8,11 @@ import java.util.ArrayList;
 
 public class Project_main_class {
     public static void main(String[] args) throws WrongSymbolException, EndOfFileException, ValueErrorException, NoMatchException, WrongLogicExprException {
-        String input_str = "List a; a.remove(5); a.add(10); a.add(20);";
+        String input_str = "x=((2)*3+2); y=x-5; z=0; List a; List b; HashSet m; HashSet n;" +
+        "while (z<5){a.add(z); m.add(z); z=z+1;} if(m.contains(2)){n.add(a.get(2));}else{no=1;}" +
+                "a.remove(3); m.add(4);";
 
+        //List a;  a.add(10); a.add(20); a.remove(1); b = 5 + 5;
         //x=((2)*3+2); y=x-5; z=0; List a; List b; HashSet m; HashSet n;" +
         //                "while (z<5){a.add(z); m.add(z); z=z+1;} if(m.contains(2)){n.add(a.get(2));}else{no=1;}" +
         //                "a.remove(3); m.add(4);
@@ -28,9 +31,9 @@ public class Project_main_class {
         ArrayList<Token> tokens = lexer.get_tokens(input_str);
         for(int i = 0; i < tokens.size(); i++){
             System.out.println(tokens.get(i).GetTokenValue());
-        }
+        }*/
 
-        System.out.println("\n");
+        /*System.out.println("\n");
         System.out.println("\n");
         System.out.println("\n");
         System.out.println("\n");*/

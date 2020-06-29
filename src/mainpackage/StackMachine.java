@@ -49,8 +49,8 @@ public class StackMachine {
                 stack.add(poliz.get(poliz_index));
                 poliz_index++;
             }
-            if (poliz.get(poliz_index).GetTokenType() == Lexems.OP
-                    || poliz.get(poliz_index).GetTokenType() == Lexems.ASSIGN_OP) {
+            if ((poliz.get(poliz_index).GetTokenType() == Lexems.OP
+                    || poliz.get(poliz_index).GetTokenType() == Lexems.ASSIGN_OP)) {
                 switch (poliz.get(poliz_index).GetTokenValue()) {
                     case ("+"):
                         temp_token.SetTokenValue(Integer.toString(add(stack.get(stack.size() - 2), stack.get(stack.size() - 1))));
@@ -170,7 +170,7 @@ public class StackMachine {
             }
 
             if (poliz.get(poliz_index).GetTokenType() == Lexems.VAR_TYPE) {
-                if (VarIsAvailable(poliz.get(poliz_index))) {
+                if (VarIsAvailable(stack.get(stack.size() - 1))) {
                     switch (poliz.get(poliz_index).GetTokenValue()) {
                         case ("List"):
                             MyLinkedList list = new MyLinkedList(stack.get(stack.size() - 1).GetTokenValue());
@@ -223,7 +223,7 @@ public class StackMachine {
                                 try {
                                     get_HashSet(stack.get(stack.size() - 2)).remove(get_token_value(stack.get(stack.size() - 1)));
                                 } catch (RuntimeException e1) {
-                                    throw new RuntimeException(e.getMessage() + e1.getMessage());
+                                    throw new RuntimeException("Neither List nor " + e1.getMessage());
                                 }
                             }
                             stack.remove(stack.size() - 1);
@@ -320,10 +320,15 @@ public class StackMachine {
     }
 
     private void assign() {
-        if (stack.get(stack.size() - 1).GetTokenType() != Lexems.VAR) {
-            VarsHashMap.put(stack.get(stack.size() - 2).GetTokenValue(), Integer.parseInt(stack.get(stack.size() - 1).GetTokenValue()));
-        } else if (stack.get(stack.size() - 1).GetTokenType() == Lexems.VAR & VarsHashMap.containsKey(stack.get(stack.size() - 1).GetTokenValue())) {
-            VarsHashMap.put(stack.get(stack.size() - 2).GetTokenValue(), VarsHashMap.get(stack.get(stack.size() - 1).GetTokenValue()));
+        if(VarIsAvailable(stack.get(stack.size() - 2))){
+            if (stack.get(stack.size() - 1).GetTokenType() != Lexems.VAR) {
+                VarsHashMap.put(stack.get(stack.size() - 2).GetTokenValue(), Integer.parseInt(stack.get(stack.size() - 1).GetTokenValue()));
+            } else if (stack.get(stack.size() - 1).GetTokenType() == Lexems.VAR & VarsHashMap.containsKey(stack.get(stack.size() - 1).GetTokenValue())) {
+                VarsHashMap.put(stack.get(stack.size() - 2).GetTokenValue(), VarsHashMap.get(stack.get(stack.size() - 1).GetTokenValue()));
+            }
+        }
+        else {
+            throw new RuntimeException("Variable \"" + stack.get(stack.size() - 2).GetTokenValue() + "\" already exists");
         }
     }
 
@@ -346,7 +351,7 @@ public class StackMachine {
         } else if (token.GetTokenType() == Lexems.DIGIT) {
             return Integer.parseInt(token.GetTokenValue());
         } else {
-            throw new RuntimeException("Variable \"" + token.GetTokenValue() + "\" is not initialized");
+            throw new RuntimeException("Variable \"" + token.GetTokenValue() + "\" is not initialized or is not a variable");
         }
     }
 
@@ -383,8 +388,7 @@ public class StackMachine {
     }
 
     private boolean VarIsAvailable(Token var_token) {
-        if (!VarsHashMap.containsKey(var_token.GetTokenValue())
-                && !linkedListsHashMap.containsKey(var_token.GetTokenValue())
+        if (!linkedListsHashMap.containsKey(var_token.GetTokenValue())
                 && !hashSetHashMap.containsKey(var_token.GetTokenValue())) {
             return true;
         } else return false;

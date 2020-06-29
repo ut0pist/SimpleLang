@@ -301,7 +301,7 @@ public class Parser {
         if (this.current_token_index < this.tokens.size()) {
             current_token = this.tokens.get(this.current_token_index);
         } else {
-            throw new EndOfFileException("End of file");
+            throw new EndOfFileException("End of file" + " on index " + current_token_index);
         }
 
         return current_token;

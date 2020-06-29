@@ -4,7 +4,7 @@ import Exceptions.WrongSymbolException;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-//hello world
+
 public class Lexer {
     public ArrayList<Token> get_tokens(String input_str) throws WrongSymbolException {
         int counter; //Счетчик количества лексем. Используется, чтобы выйти из цикла поиска токенов.
@@ -12,8 +12,8 @@ public class Lexer {
         String buffer_str;
 
         while (!input_str.isEmpty()) {
-            counter = 22;
             for (Lexems lexem : Lexems.values()) {
+                counter = Lexems.values().length;
                 Matcher matcher = lexem.pattern.matcher(input_str);
                 if (matcher.find()) {
                     if (lexem == Lexems.SPACE) {
@@ -30,7 +30,7 @@ public class Lexer {
                     break;
                 }
                 if (counter == 1 && !matcher.find()) {
-                    throw new WrongSymbolException("Syntax error near " + input_str.substring(0, 1) + " symbol");
+                    throw new WrongSymbolException("Syntax error near \"" + input_str.substring(0, 1) + "\" symbol");
                 }
                 counter--;
             }
